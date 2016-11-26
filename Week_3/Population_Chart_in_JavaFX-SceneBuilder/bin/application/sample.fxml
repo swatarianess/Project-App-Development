@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="500.0" minWidth="750.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.Controller">
+  <!-- TODO Add Nodes -->
+  <children>
+    <LineChart fx:id="LineChart" layoutX="25.0" layoutY="14.0" title="Poplulations">
+      <xAxis>
+        <CategoryAxis fx:id="xAxis" side="BOTTOM" />
+      </xAxis>
+      <yAxis>
+        <NumberAxis fx:id="yAxis" side="LEFT" />
+      </yAxis>
+    </LineChart>
+    <RadioButton fx:id="cowButton" layoutX="576.0" layoutY="84.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Cattle" />
+    <RadioButton fx:id="horseButton" layoutX="576.0" layoutY="134.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Horses" />
+    <RadioButton fx:id="deerButton" layoutX="576.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Red Deer" />
+  </children>
+</AnchorPane>
