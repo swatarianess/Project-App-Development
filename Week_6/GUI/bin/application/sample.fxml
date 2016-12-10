@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="600.0" minWidth="750.0" styleClass="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.Controller">
+  <!-- TODO Add Nodes -->
+  <children>
+    <LineChart fx:id="LineChart" layoutX="14.0" layoutY="29.0" prefWidth="722.0" title="Poplulations">
+      <xAxis>
+        <CategoryAxis fx:id="xAxis" side="BOTTOM" />
+      </xAxis>
+      <yAxis>
+        <NumberAxis fx:id="yAxis" side="LEFT" />
+      </yAxis>
+    </LineChart>
+    <RadioButton fx:id="cowButton" layoutX="465.0" layoutY="515.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Cattle" />
+    <RadioButton fx:id="horseButton" layoutX="465.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Horses" />
+    <RadioButton fx:id="deerButton" layoutX="465.0" layoutY="490.0" mnemonicParsing="false" onAction="#handleButtonClick" text="Red Deer" />
+    <RadioButton layoutX="465.0" layoutY="452.0" mnemonicParsing="false" text="Total" />
+    <MenuBar layoutX="0.0" layoutY="0.0" prefHeight="30.0" prefWidth="750.0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Settings">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Delete" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <TextField layoutX="36.0" layoutY="471.0" prefWidth="111.00009999999747" promptText="Enter a number" />
+    <Label layoutX="45.0" layoutY="452.0" text="Years to predict" />
+    <Label layoutX="36.0" layoutY="525.0" text="Enter Custom Data" />
+    <TextField layoutX="33.0" layoutY="549.0" prefWidth="119.0" promptText="Choose file location" />
+    <Button layoutX="152.0" layoutY="549.0" mnemonicParsing="false" prefWidth="68.0" text="Browse..." />
+    <Button layoutX="148.0" layoutY="471.0" mnemonicParsing="false" text="Calculate" />
+  </children>
+</AnchorPane>
