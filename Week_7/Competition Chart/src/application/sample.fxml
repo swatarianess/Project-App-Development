@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="500.0" minWidth="750.0" prefHeight="765.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.Controller">
+  <!-- TODO Add Nodes -->
+  <children>
+    <LineChart fx:id="LineChart" layoutX="0.0" layoutY="0.0" prefHeight="500.0" prefWidth="750.0" title="Predicted data">
+      <xAxis>
+        <NumberAxis fx:id="xAxis" autoRanging="true" forceZeroInRange="false" side="BOTTOM" tickLength="8.0" tickMarkVisible="true" tickUnit="2.0" />
+      </xAxis>
+      <yAxis>
+        <NumberAxis fx:id="yAxis" side="LEFT" />
+      </yAxis>
+    </LineChart>
+    <TextField fx:id="get" layoutX="23.0" layoutY="540.0" onAction="#handleButtonAction" promptText="Tittel" />
+    <Button fx:id="getButton" layoutX="168.0" layoutY="540.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Button" />
+  </children>
+</AnchorPane>
