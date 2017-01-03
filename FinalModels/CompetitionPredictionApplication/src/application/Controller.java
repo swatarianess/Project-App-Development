@@ -9,11 +9,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 public class Controller implements Initializable {
+	@FXML
+	private MenuItem exit;
+	@FXML
+	private MenuItem about;
 	@FXML
 	private TextField cattleInput;
 	@FXML
@@ -34,9 +41,13 @@ public class Controller implements Initializable {
 	private Label geese;
 	@FXML
 	private Label years;
+	
 	private int time = TextField.DEFAULT_PREF_COLUMN_COUNT;
-	// private Animal animal;
-
+	
+	//private String cows = getCattleInput().getText();
+	//private String horses = getHorseInput().getText();
+	//private String deers = getDeerInput().getText();
+	
 	@FXML
 	private Button compute;
 	@FXML
@@ -44,16 +55,38 @@ public class Controller implements Initializable {
 	@FXML
 	private Button clearData;
 	@FXML
+	private Button grassLeft;
+	@FXML
 	private NumberAxis xAxis;
 	@FXML
 	private NumberAxis yAxis;
 	@FXML
-	private LineChart<?, ?> lineChart;
+	private LineChart<Number, Number> lineChart;
 	
 	//clear the graph data
 	@FXML
 	private void handleClearData(ActionEvent event) {
 		lineChart.getData().clear();
+	}
+	
+	private double grassAvailable = 590551.182;
+	
+	@FXML
+	private void calculateGrassLeft(ActionEvent event) {
+		String cowConsumption = getCattleInput().getText();
+		String horseConsumption = getHorseInput().getText();
+		String deerConsumption = getDeerInput().getText();
+		double cowCons = Double.parseDouble(cowConsumption);
+		double horseCons = Double.parseDouble(horseConsumption);
+		double deerCons = Double.parseDouble(deerConsumption);
+		double cowFoodConsumption = 15 * cowCons;
+		double horseFoodConsumption = 9.4 * horseCons;
+		double deerFoodConsumption = 2.5 * deerCons;
+		
+		for(int i = 0; i < Integer.parseInt(yearsInput.getText()); i++){
+		this.grassAvailable = grassAvailable - (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption);
+		System.out.println("Grass left in KG after " + i + " years is " + grassAvailable);
+		}
 	}
 	
 	//handle the input fields and calculation
@@ -82,7 +115,7 @@ public class Controller implements Initializable {
 		double KHorse = 868;
 		double aHorseCow = 1.010;
 		double aHorseDeer = 0.2937;
-
+		//rate of growth of each animal
 		double rateCow = 0;
 		double rateDeer = 0;
 		double rateHorse = 0;
@@ -123,7 +156,16 @@ public class Controller implements Initializable {
 					NHorse = (double) 0;
 					rateHorse = 0;
 				}
+				
 			}
+			/*if (horses.isEmpty() || cows.isEmpty() || deers.isEmpty()){
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Empty Fields Alert");
+				alert.setHeaderText("There are some empty fields");
+				alert.setContentText("Please fill in all the fields");
+
+				alert.showAndWait();
+			}*/
 			cowSeries.getData().add(new XYChart.Data<Integer, Double>(i, NCow));
 			horseSeries.getData().add(new XYChart.Data<Integer, Double>(i, NHorse));
 			deerSeries.getData().add(new XYChart.Data<Integer, Double>(i, NDeer));
@@ -248,6 +290,21 @@ public class Controller implements Initializable {
 		// draw all charts
 		lineChart.getData().addAll(series, series2, series3); 
 	}
+	
+	@FXML
+    private void handleAbout() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("About us");
+        alert.setHeaderText("Creators of this project");
+        alert.setContentText("Buaron Tal\nCholodov Andrej\nNieuwenhuis Jens\nAndreicha Semida\nAdu Stephen");
+
+        alert.showAndWait();
+    }
+	
+	@FXML
+    private void handleExit() {
+        System.exit(0);
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

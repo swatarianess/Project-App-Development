@@ -16,7 +16,7 @@
 <AnchorPane minHeight="500.0" minWidth="750.0" prefHeight="765.0" prefWidth="1039.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
   <!-- TODO Add Nodes -->
   <children>
-    <LineChart fx:id="lineChart" layoutX="221.0" layoutY="32.0" prefHeight="500.0" prefWidth="804.0" title="Predicted data">
+    <LineChart fx:id="lineChart" layoutX="219.0" layoutY="32.0" prefHeight="517.0" prefWidth="850.0" title="Predicted data">
       <xAxis>
         <NumberAxis autoRanging="true" forceZeroInRange="false" side="BOTTOM" tickLength="8.0" tickMarkVisible="true" tickUnit="2.0" fx:id="xAxis" />
       </xAxis>
@@ -28,7 +28,7 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#handleExit" text="Close" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Settings">
@@ -36,9 +36,9 @@
             <MenuItem mnemonicParsing="false" text="Delete" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="About us">
           <items>
-            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem fx:id="about" mnemonicParsing="false" onAction="#handleAbout" text="About" />
           </items>
         </Menu>
       </menus>
@@ -46,22 +46,22 @@
     <Label layoutX="48.0" layoutY="597.0" prefWidth="140.0" text="Open data from .cvs file" />
     <TextField layoutX="45.0" layoutY="621.0" prefWidth="119.0" promptText="Choose file location" />
     <Button layoutX="164.0" layoutY="621.0" mnemonicParsing="false" prefWidth="68.0" text="Browse..." />
-    <TextField fx:id="yearsInput" layoutX="50.0" layoutY="351.0" prefWidth="111.00009999999747" promptText="Enter a number" />
-    <Label fx:id="years" layoutX="57.0" layoutY="332.0" text="Years to predict" />
+    <TextField fx:id="yearsInput" layoutX="50.0" layoutY="300.0" prefWidth="100.0" promptText="Enter a number" />
+    <Label fx:id="years" layoutX="57.0" layoutY="285.0" text="Years to predict" />
     <Label layoutX="45.0" layoutY="58.0" text="Enter Custom Data">
       <font>
         <Font name="System Bold" size="14.0" />
       </font>
     </Label>
-    <TextField fx:id="cattleInput" layoutX="50.0" layoutY="103.0" prefWidth="111.00009999999747" promptText="Enter a number" />
-    <Label fx:id="cattle" layoutX="82.0" layoutY="87.0" prefHeight="17.0" prefWidth="36.0" text="Cattle" />
-    <TextField fx:id="deerInput" layoutX="50.0" layoutY="159.0" prefWidth="111.00009999999747" promptText="Enter a number" />
-    <Label fx:id="deer" layoutX="72.0" layoutY="144.0" prefWidth="68.0" text="Red Deer" />
-    <TextField fx:id="horseInput" layoutX="50.0" layoutY="221.0" prefWidth="111.00009999999747" promptText="Enter a number" />
-    <Label fx:id="horse" layoutX="77.0" layoutY="205.0" prefWidth="68.0" text="Horses" />
-    <TextField fx:id="geeseInput" layoutX="50.0" layoutY="282.0" prefWidth="111.00009999999747" promptText="Enter a number" />
-    <Label fx:id="geese" layoutX="77.0" layoutY="266.0" prefWidth="68.0" text="Geese" />
-    <Button id="getButton" fx:id="compute" layoutX="57.0" layoutY="401.0" mnemonicParsing="false" onAction="#handleCompute" prefWidth="84.0" text="Compute" />
+    <TextField fx:id="cattleInput" layoutX="50.0" layoutY="100.0" prefHeight="25.0" prefWidth="100.0" promptText="Enter a number" />
+    <Label fx:id="cattle" layoutX="84.0" layoutY="85.0" prefHeight="17.0" text="Cattle" />
+    <TextField fx:id="deerInput" layoutX="50.0" layoutY="150.0" prefWidth="100.0" promptText="Enter a number" />
+    <Label fx:id="deer" layoutX="74.0" layoutY="135.0" prefHeight="17.0" prefWidth="50.0" text="Red Deer" />
+    <TextField fx:id="horseInput" layoutX="50.0" layoutY="200.0" prefWidth="100.0" promptText="Enter a number" />
+    <Label fx:id="horse" layoutX="82.0" layoutY="185.0" text="Horses" />
+    <TextField fx:id="geeseInput" layoutX="50.0" layoutY="250.0" prefWidth="100.0" promptText="Enter a number" />
+    <Label fx:id="geese" layoutX="83.0" layoutY="235.0" text="Geese" />
+    <Button id="getButton" fx:id="compute" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleCompute" prefWidth="100.0" text="Predict" />
     <RadioButton id="cowButton" layoutX="598.0" layoutY="643.0" mnemonicParsing="false" text="Cattle" />
     <RadioButton id="horseButton" layoutX="598.0" layoutY="669.0" mnemonicParsing="false" text="Horses" />
     <RadioButton id="deerButton" layoutX="598.0" layoutY="618.0" mnemonicParsing="false" text="Red Deer" />
@@ -71,8 +71,8 @@
       </font>
     </RadioButton>
     <RadioButton id="horseButton" layoutX="598.0" layoutY="697.0" mnemonicParsing="false" text="Geese" />
-      <Button id="getButton" fx:id="showHistory" layoutX="29.0" layoutY="441.0" mnemonicParsing="false" onAction="#handleHistoricalData" prefHeight="25.0" prefWidth="140.0" text="Show Historical Data" />
-      <Label layoutX="619.0" layoutY="532.0" text="Years">
+      <Button id="getButton" fx:id="showHistory" layoutX="37.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleHistoricalData" prefHeight="25.0" text="Show Historical Data" />
+      <Label layoutX="609.0" layoutY="539.0" text="Years">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -82,6 +82,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <Button fx:id="clearData" layoutX="57.0" layoutY="481.0" mnemonicParsing="false" onAction="#handleClearData" prefWidth="84.0" text="Clear Data" />
+      <Button fx:id="clearData" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleClearData" prefWidth="100.0" text="Clear Data" />
+      <Button fx:id="grassLeft" layoutX="50.0" layoutY="500.0" mnemonicParsing="false" onAction="#calculateGrassLeft" prefWidth="100.0" text="Grass Left" />
   </children>
 </AnchorPane>
