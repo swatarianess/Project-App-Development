@@ -41,13 +41,13 @@ public class Controller implements Initializable {
 	private Label geese;
 	@FXML
 	private Label years;
-	
+
 	private int time = TextField.DEFAULT_PREF_COLUMN_COUNT;
-	
-	//private String cows = getCattleInput().getText();
-	//private String horses = getHorseInput().getText();
-	//private String deers = getDeerInput().getText();
-	
+
+	// private String cows = getCattleInput().getText();
+	// private String horses = getHorseInput().getText();
+	// private String deers = getDeerInput().getText();
+
 	@FXML
 	private Button compute;
 	@FXML
@@ -62,15 +62,19 @@ public class Controller implements Initializable {
 	private NumberAxis yAxis;
 	@FXML
 	private LineChart<Number, Number> lineChart;
-	
-	//clear the graph data
+
+	// clear the graph data
 	@FXML
 	private void handleClearData(ActionEvent event) {
 		lineChart.getData().clear();
+		if (clearData.isArmed()) {
+			compute.setDisable(false);
+			showHistory.setDisable(false);
+		}
 	}
-	
-	private double grassAvailable = 590551.182;
-	
+
+	private long grassAvailable = 14173228;//590551.182kg (based on 0.3cm height * 24 = 8cm average height.
+
 	@FXML
 	private void calculateGrassLeft(ActionEvent event) {
 		String cowConsumption = getCattleInput().getText();
@@ -79,101 +83,130 @@ public class Controller implements Initializable {
 		double cowCons = Double.parseDouble(cowConsumption);
 		double horseCons = Double.parseDouble(horseConsumption);
 		double deerCons = Double.parseDouble(deerConsumption);
-		double cowFoodConsumption = 15 * cowCons;
-		double horseFoodConsumption = 9.4 * horseCons;
-		double deerFoodConsumption = 2.5 * deerCons;
-		
-		for(int i = 0; i < Integer.parseInt(yearsInput.getText()); i++){
-		this.grassAvailable = grassAvailable - (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption);
-		System.out.println("Grass left in KG after " + i + " years is " + grassAvailable);
+		double cowFoodConsumption = 15 * 365 * cowCons;
+		double horseFoodConsumption = 9.4 * 365 * horseCons;
+		double deerFoodConsumption = 2.5 * 365 * deerCons;
+
+		for (int i = 1; i < Integer.parseInt(yearsInput.getText()) + 1; i++) {
+			this.grassAvailable = grassAvailable - ((long)cowFoodConsumption + (long)horseFoodConsumption + (long)deerFoodConsumption);
+			System.out.println("Grass left in KG after " + i + " years is " + grassAvailable);
 		}
 	}
-	
-	//handle the input fields and calculation
+
+	// handle the input fields and calculation
 	@SuppressWarnings("unchecked")
 	@FXML
 	private void handleCompute(ActionEvent event) {
-		// Converting TextField to String
-		String cows = getCattleInput().getText();
-		String horses = getHorseInput().getText();
-		String deers = getDeerInput().getText();
-		// Converting the String to Double
-		double NCow = Double.parseDouble(cows);
-		double rCow = 0.1588527691497652;
-		double KCow = 427;
-		double aCowDeer = 0.2832;
-		double aCowHorse = 0.9748;
-		// Converting the String to Double
-		double NDeer = Double.parseDouble(deers);
-		double rDeer = 0.372092211870399691;
-		double KDeer = 2000;
-		double aDeerCow = 0.6340;
-		double aDeerHorse = 0.6346;
-		// Converting the String to Double
-		double NHorse = Double.parseDouble(horses);
-		double rHorse = 0.330062695413144696;
-		double KHorse = 868;
-		double aHorseCow = 1.010;
-		double aHorseDeer = 0.2937;
-		//rate of growth of each animal
-		double rateCow = 0;
-		double rateDeer = 0;
-		double rateHorse = 0;
-		@SuppressWarnings("rawtypes")
-		XYChart.Series cowSeries = new XYChart.Series<>();
-		@SuppressWarnings("rawtypes")
-		XYChart.Series horseSeries = new XYChart.Series<>();
-		@SuppressWarnings("rawtypes")
-		XYChart.Series deerSeries = new XYChart.Series<>();
-		cowSeries.setName("Cows");
-		horseSeries.setName("Horse"); // chart Name
-		deerSeries.setName("Deer");
-		
-		time = Integer.parseInt(yearsInput.getText());
-		for (int i = 0; i < time; i++) {
-			if ((int) i == 0) {
-				NCow = Double.parseDouble(cows);
-				NDeer = Double.parseDouble(deers);
-				NHorse = Double.parseDouble(horses);
-			} else {
-				rateCow = rCow * (NCow + rateCow) * (1 - ((NCow + (aCowDeer * NDeer) + (aCowHorse * NHorse)) / KCow));
-				rateDeer = rDeer * (NDeer + rateDeer)
-						* (1 - ((NDeer + (aDeerCow * NCow) + (aDeerHorse * NHorse)) / KDeer));
-				rateHorse = rHorse * (NHorse + rateHorse)
-						* (1 - ((NHorse + (aHorseCow * NCow) + (aHorseDeer * NDeer)) / KHorse));
-				NCow = NCow + rateCow;
-				NDeer = NDeer + rateDeer;
-				NHorse = NHorse + rateHorse;
-				if (NCow < 1) {
-					NCow = (double) 0;
-					rateCow = 0;
-				}
-				if (NDeer < 1) {
-					NDeer = (double) 0;
-					rateDeer = 0;
-				}
-				if (NHorse < 1) {
-					NHorse = (double) 0;
-					rateHorse = 0;
-				}
-				
-			}
-			/*if (horses.isEmpty() || cows.isEmpty() || deers.isEmpty()){
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Empty Fields Alert");
-				alert.setHeaderText("There are some empty fields");
-				alert.setContentText("Please fill in all the fields");
+		if (isInputValid()) {
+			// Converting TextField to String
+			String cows = getCattleInput().getText();
+			String horses = getHorseInput().getText();
+			String deers = getDeerInput().getText();
+			// String geese = getGeeseInput().getText();
+			// Converting the String of cows to double
+			double NCow = Double.parseDouble(cows);
+			double rCow = 0.1588527691497652;
+			double KCow = 427;
+			double aCowDeer = 0.2832;
+			double aCowHorse = 0.9748;
+			// Converting the String of deers to double
+			double NDeer = Double.parseDouble(deers);
+			double rDeer = 0.372092211870399691;
+			double KDeer = 2000;
+			double aDeerCow = 0.6340;
+			double aDeerHorse = 0.6346;
+			// Converting the String of horses to double
+			double NHorse = Double.parseDouble(horses);
+			double rHorse = 0.330062695413144696;
+			double KHorse = 868;
+			double aHorseCow = 1.010;
+			double aHorseDeer = 0.2937;
+			// Converting the String of geese to double
+			// double NGeese = Double.parseDouble(geese);
+			// rate of growth of each animal
+			double rateCow = 0;
+			double rateDeer = 0;
+			double rateHorse = 0;
+			@SuppressWarnings("rawtypes")
+			XYChart.Series cowSeries = new XYChart.Series<>();
+			@SuppressWarnings("rawtypes")
+			XYChart.Series horseSeries = new XYChart.Series<>();
+			@SuppressWarnings("rawtypes")
+			XYChart.Series deerSeries = new XYChart.Series<>();
+			cowSeries.setName("Cows");
+			horseSeries.setName("Horse"); // chart Name
+			deerSeries.setName("Deer");
 
-				alert.showAndWait();
-			}*/
-			cowSeries.getData().add(new XYChart.Data<Integer, Double>(i, NCow));
-			horseSeries.getData().add(new XYChart.Data<Integer, Double>(i, NHorse));
-			deerSeries.getData().add(new XYChart.Data<Integer, Double>(i, NDeer));
+			time = Integer.parseInt(yearsInput.getText());
+			for (int i = 0; i < time; i++) {
+				if ((int) i == 0) {
+					NCow = Double.parseDouble(cows);
+					NDeer = Double.parseDouble(deers);
+					NHorse = Double.parseDouble(horses);
+				} else {
+					rateCow = rCow * (NCow + rateCow)
+							* (1 - ((NCow + (aCowDeer * NDeer) + (aCowHorse * NHorse)) / KCow));
+					rateDeer = rDeer * (NDeer + rateDeer)
+							* (1 - ((NDeer + (aDeerCow * NCow) + (aDeerHorse * NHorse)) / KDeer));
+					rateHorse = rHorse * (NHorse + rateHorse)
+							* (1 - ((NHorse + (aHorseCow * NCow) + (aHorseDeer * NDeer)) / KHorse));
+					NCow = NCow + rateCow;
+					NDeer = NDeer + rateDeer;
+					NHorse = NHorse + rateHorse;
+					if (NCow < 1) {
+						NCow = (double) 0;
+						rateCow = 0;
+					}
+					if (NDeer < 1) {
+						NDeer = (double) 0;
+						rateDeer = 0;
+					}
+					if (NHorse < 1) {
+						NHorse = (double) 0;
+						rateHorse = 0;
+					}
+					if (compute.isArmed()) {
+						compute.setDisable(true);
+						showHistory.setDisable(true);
+					}
+				}
+				cowSeries.getData().add(new XYChart.Data<Integer, Double>(i, NCow));
+				horseSeries.getData().add(new XYChart.Data<Integer, Double>(i, NHorse));
+				deerSeries.getData().add(new XYChart.Data<Integer, Double>(i, NDeer));
+			}
 			lineChart.getData().addAll(cowSeries, horseSeries, deerSeries);
 		}
 	}
-	
-	//display historical data
+
+	private boolean isInputValid() {
+		String errorMessage = "";
+		if (horseInput.getText() == null || horseInput.getText().length() == 0) {
+			errorMessage += "Please enter horses input\n";
+		}
+		if (cattleInput.getText() == null || cattleInput.getText().length() == 0) {
+			errorMessage += "Please enter cattle input\n";
+		}
+		if (deerInput.getText() == null || deerInput.getText().length() == 0) {
+			errorMessage += "Please enter deer input\n";
+		}
+		if (yearsInput.getText() == null || yearsInput.getText().length() == 0) {
+			errorMessage += "Please enter amount of years to predict";
+		}
+		if (errorMessage.length() == 0) {
+			return true;
+		} else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Empty Fields Alert");
+			alert.setHeaderText("There are some empty fields");
+			alert.setContentText(errorMessage);
+
+			alert.showAndWait();
+
+			return false;
+		}
+	}
+
+	// display historical data
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	public void handleHistoricalData(ActionEvent event) {
@@ -219,7 +252,7 @@ public class Controller implements Initializable {
 		series.getData().add(new XYChart.Data<Integer, Double>(2013, 310.0));
 		series.getData().add(new XYChart.Data<Integer, Double>(2014, 200.0));
 		series.getData().add(new XYChart.Data<Integer, Double>(2015, 250.0));
-		//add historical data to horse
+		// add historical data to horse
 		series2.getData().add(new XYChart.Data<Integer, Double>(1983, 0.0));
 		series2.getData().add(new XYChart.Data<Integer, Double>(1984, 20.0));
 		series2.getData().add(new XYChart.Data<Integer, Double>(1985, 20.0));
@@ -253,7 +286,7 @@ public class Controller implements Initializable {
 		series2.getData().add(new XYChart.Data<Integer, Double>(2013, 1150.0));
 		series2.getData().add(new XYChart.Data<Integer, Double>(2014, 990.0));
 		series2.getData().add(new XYChart.Data<Integer, Double>(2015, 1250.0));
-		//add historical data to deer
+		// add historical data to deer
 		series3.getData().add(new XYChart.Data<Integer, Double>(1983, 0.0));
 		series3.getData().add(new XYChart.Data<Integer, Double>(1984, 0.0));
 		series3.getData().add(new XYChart.Data<Integer, Double>(1985, 0.0));
@@ -288,29 +321,34 @@ public class Controller implements Initializable {
 		series3.getData().add(new XYChart.Data<Integer, Double>(2014, 2500.0));
 		series3.getData().add(new XYChart.Data<Integer, Double>(2015, 3200.0));
 		// draw all charts
-		lineChart.getData().addAll(series, series2, series3); 
+		if (showHistory.isArmed()) {
+			compute.setDisable(true);
+			showHistory.setDisable(true);
+		}
+		lineChart.getData().addAll(series, series2, series3);
 	}
-	
-	@FXML
-    private void handleAbout() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("About us");
-        alert.setHeaderText("Creators of this project");
-        alert.setContentText("Buaron Tal\nCholodov Andrej\nNieuwenhuis Jens\nAndreicha Semida\nAdu Stephen");
 
-        alert.showAndWait();
-    }
-	
 	@FXML
-    private void handleExit() {
-        System.exit(0);
-    }
+	private void handleAbout() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("About us");
+		alert.setHeaderText("Creators of this project");
+		alert.setContentText("Buaron Tal\nCholodov Andrej\nNieuwenhuis Jens\nAndreicha Semida\nAdu Stephen");
+
+		alert.showAndWait();
+	}
+
+	@FXML
+	private void handleExit() {
+		System.exit(0);
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
-	//getters and setters for the fields and buttons
+
+	// getters and setters for the fields and buttons
 	public TextField getCattleInput() {
 		return cattleInput;
 	}
@@ -341,5 +379,9 @@ public class Controller implements Initializable {
 
 	public Button getHistory() {
 		return showHistory;
+	}
+
+	public Button getClearData() {
+		return clearData;
 	}
 }
