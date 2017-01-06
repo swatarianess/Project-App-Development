@@ -1,30 +1,34 @@
 package application;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 
 public class Controller implements Initializable {
-
+	@FXML
 	public RadioButton cowRadioButton;
+	@FXML
 	public RadioButton horseRadioButton;
+	@FXML
 	public RadioButton deerRadioButton;
+	@FXML
 	public RadioButton totalRadiobutton;
 
+	@SuppressWarnings("rawtypes")
 	private XYChart.Series cowSeries = new XYChart.Series<>();
+	@SuppressWarnings("rawtypes")
 	private XYChart.Series deerSeries = new XYChart.Series<>();
+	@SuppressWarnings("rawtypes")
 	private XYChart.Series horseSeries = new XYChart.Series<>();
 
 	private int time = TextField.DEFAULT_PREF_COLUMN_COUNT;
@@ -64,6 +68,8 @@ public class Controller implements Initializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@FXML
 	public void handleAppearanceCattle(ActionEvent actionEvent) {
 		if (!cowRadioButton.isSelected()) {
 			System.out.println("Not showing Cattle points.");
@@ -78,6 +84,8 @@ public class Controller implements Initializable {
 	}
 
 
+	@SuppressWarnings("unchecked")
+	@FXML
 	public void handleAppearanceHorses(ActionEvent actionEvent) {
 		if (!horseRadioButton.isSelected()) {
 			System.out.println("Not showing Horse points.");
@@ -91,6 +99,8 @@ public class Controller implements Initializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@FXML
 	public void handleAppearanceRedDeer(ActionEvent actionEvent) {
 		if (!deerRadioButton.isSelected()) {
 			System.out.println("Not showing Deer points.");
@@ -136,6 +146,7 @@ public class Controller implements Initializable {
 	 *
 	 * @param event ?
 	 */
+	@SuppressWarnings("unchecked")
 	@FXML
 	private void handleCompute(ActionEvent event) {
 		if (isInputValid()) {
@@ -217,12 +228,23 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Checks whether the input given in the textfields are valid
+	 * Checks whether the input given in the text fields are valid
 	 *
 	 * @return <b>True</b> if the input fields are not empty. <b>False</b> if the input fields are empty
 	 */
+	
 	private boolean isInputValid() {
 		String errorMessage = "";
+		@SuppressWarnings("unused")
+		int valid;
+		try{
+			valid = Integer.parseInt(horseInput.getText());
+			valid = Integer.parseInt(cattleInput.getText());
+			valid = Integer.parseInt(deerInput.getText());
+			valid = Integer.parseInt(yearsInput.getText());
+		}catch (NumberFormatException ex) {
+			errorMessage += "Please enter a valid number\n";
+		}
 		if (horseInput.getText() == null || horseInput.getText().length() == 0) {
 			errorMessage += "Please enter horses input\n";
 		}
@@ -251,7 +273,7 @@ public class Controller implements Initializable {
 
 
 	// display historical data
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@FXML
 	public void handleHistoricalData(ActionEvent event) {
 
@@ -394,7 +416,7 @@ public class Controller implements Initializable {
 		deerSeries.setName("Deer");
 
 		//To fix bug where clicking radio button like madman doesn't mess up the lines
-		lineChart.setAnimated(false);
+		lineChart.setAnimated(true);
 
 	}
 
