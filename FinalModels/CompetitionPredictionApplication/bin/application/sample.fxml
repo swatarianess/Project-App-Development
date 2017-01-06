@@ -21,14 +21,14 @@
         <NumberAxis autoRanging="true" forceZeroInRange="false" side="BOTTOM" tickLength="8.0" tickMarkVisible="true" tickUnit="2.0" fx:id="xAxis" />
       </xAxis>
       <yAxis>
-        <NumberAxis fx:id="yAxis" side="LEFT" />
+        <NumberAxis side="LEFT" />
       </yAxis>
     </LineChart>
     <MenuBar id="menuBar" layoutX="0.0" layoutY="0.0" prefHeight="32.0" prefWidth="1039.0">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#handleExit" text="Close" />
+            <MenuItem  mnemonicParsing="false" onAction="#handleExit" text="Close" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Settings">
@@ -54,18 +54,18 @@
       </font>
     </Label>
     <TextField fx:id="cattleInput" layoutX="50.0" layoutY="100.0" prefHeight="25.0" prefWidth="100.0" promptText="Enter a number" />
-    <Label fx:id="cattle" layoutX="84.0" layoutY="85.0" prefHeight="17.0" text="Cattle" />
+    <Label layoutX="84.0" layoutY="85.0" prefHeight="17.0" text="Cattle" />
     <TextField fx:id="deerInput" layoutX="50.0" layoutY="150.0" prefWidth="100.0" promptText="Enter a number" />
-    <Label fx:id="deer" layoutX="74.0" layoutY="135.0" prefHeight="17.0" prefWidth="50.0" text="Red Deer" />
+    <Label layoutX="74.0" layoutY="135.0" prefHeight="17.0" prefWidth="50.0" text="Red Deer" />
     <TextField fx:id="horseInput" layoutX="50.0" layoutY="200.0" prefWidth="100.0" promptText="Enter a number" />
-    <Label fx:id="horse" layoutX="82.0" layoutY="185.0" text="Horses" />
+    <Label layoutX="82.0" layoutY="185.0" text="Horses" />
     <TextField fx:id="geeseInput" layoutX="50.0" layoutY="250.0" prefWidth="100.0" promptText="Enter a number" />
-    <Label fx:id="geese" layoutX="83.0" layoutY="235.0" text="Geese" />
+    <Label layoutX="83.0" layoutY="235.0" text="Geese" />
     <Button id="getButton" fx:id="compute" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleCompute" prefWidth="100.0" text="Predict" />
-    <RadioButton id="cowButton" layoutX="598.0" layoutY="643.0" mnemonicParsing="false" text="Cattle" />
-    <RadioButton id="horseButton" layoutX="598.0" layoutY="669.0" mnemonicParsing="false" text="Horses" />
-    <RadioButton id="deerButton" layoutX="598.0" layoutY="618.0" mnemonicParsing="false" text="Red Deer" />
-    <RadioButton layoutX="598.0" layoutY="580.0" mnemonicParsing="false" text="Total">
+    <RadioButton fx:id="cowRadioButton" layoutX="598.0" layoutY="643.0" mnemonicParsing="false" text="Cattle" onAction="#handleAppearanceCattle" />
+    <RadioButton fx:id="horseRadioButton" layoutX="598.0" layoutY="669.0" mnemonicParsing="false" text="Horses" onAction="#handleAppearanceHorses" />
+    <RadioButton fx:id="deerRadioButton" layoutX="598.0" layoutY="618.0" mnemonicParsing="false" text="Red Deer" onAction="#handleAppearanceRedDeer" />
+    <RadioButton fx:id="totalRadiobutton" layoutX="598.0" layoutY="580.0" mnemonicParsing="false" text="Total">
       <font>
         <Font name="System Bold" size="12.0" />
       </font>
