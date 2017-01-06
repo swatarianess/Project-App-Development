@@ -83,12 +83,8 @@ public class Controller implements Initializable {
 		}
 	}
 
-<<<<<<< HEAD
-=======
-
 	@SuppressWarnings("unchecked")
 	@FXML
->>>>>>> f77521b3f9260ec8bc068c494e559b4aa82a9482
 	public void handleAppearanceHorses(ActionEvent actionEvent) {
 		if (!horseRadioButton.isSelected()) {
 			System.out.println("Not showing Horse points.");
