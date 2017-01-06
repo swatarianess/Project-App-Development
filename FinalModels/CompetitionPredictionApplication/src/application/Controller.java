@@ -77,7 +77,6 @@ public class Controller implements Initializable {
 		}
 	}
 
-
 	public void handleAppearanceHorses(ActionEvent actionEvent) {
 		if (!horseRadioButton.isSelected()) {
 			System.out.println("Not showing Horse points.");
@@ -105,7 +104,7 @@ public class Controller implements Initializable {
 	}
 
 	@FXML
-	private void calculateGrassLeft(ActionEvent event) throws NumberFormatException {
+	private void calculateGrassLeft(ActionEvent event) {
 		if(isInputValid()) {
 			String cowConsumption = getCattleInput().getText();
 			String horseConsumption = getHorseInput().getText();
@@ -116,17 +115,22 @@ public class Controller implements Initializable {
 			double cowFoodConsumption = 15 * 365 * cowCons;
 			double horseFoodConsumption = 9.4 * 365 * horseCons;
 			double deerFoodConsumption = 2.5 * 365 * deerCons;
+			int predictedYears = Integer.parseInt(yearsInput.getText());
 
 			long tempGrass = grassAvailable;
 
-			for (int i = 0; i <= Integer.parseInt(yearsInput.getText()); i++) {
+			for (int i = 0; i <= predictedYears;  i++) {
 				if (i <= 0) {
 					System.out.println("========== Grass Left ==========");
 					System.out.println("Year: " + i + " Grass available: " + tempGrass);
-				} else {
-					tempGrass -= (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption);
-					System.out.println("Year: " + i + " Grass available: " + tempGrass);
+					continue;
 				}
+				if(i == predictedYears){
+					System.out.println("================================" );
+					continue;
+				}
+				tempGrass -= (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption);
+				System.out.println("Year: " + i + " Grass available: " + tempGrass);
 			}
 		}
 	}
@@ -434,6 +438,5 @@ public class Controller implements Initializable {
 	public Button getClearData() {
 		return clearData;
 	}
-
 
 }

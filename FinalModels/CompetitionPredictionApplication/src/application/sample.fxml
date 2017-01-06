@@ -14,7 +14,6 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane minHeight="500.0" minWidth="750.0" prefHeight="765.0" prefWidth="1039.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
-  <!-- TODO Add Nodes -->
   <children>
     <LineChart fx:id="lineChart" layoutX="219.0" layoutY="32.0" prefHeight="517.0" prefWidth="850.0" title="Predicted data">
       <xAxis>
