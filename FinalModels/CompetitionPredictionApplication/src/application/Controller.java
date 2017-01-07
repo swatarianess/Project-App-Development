@@ -112,33 +112,8 @@ public class Controller implements Initializable {
 			}
 		}
 	}
-	/*
-	 * @FXML private void calculateGrassLeft(ActionEvent event) throws
-	 * NumberFormatException { if(isInputValid()) { String cowConsumption =
-	 * getCattleInput().getText(); String horseConsumption =
-	 * getHorseInput().getText(); String deerConsumption =
-	 * getDeerInput().getText(); double cowCons =
-	 * Double.parseDouble(cowConsumption); double horseCons =
-	 * Double.parseDouble(horseConsumption); double deerCons =
-	 * Double.parseDouble(deerConsumption); double cowFoodConsumption = 15 * 365
-	 * * cowCons; double horseFoodConsumption = 9.4 * 365 * horseCons; double
-	 * deerFoodConsumption = 2.5 * 365 * deerCons;
-	 * 
-	 * long tempGrass = grassAvailable;
-	 * 
-	 * for (int i = 0; i <= Integer.parseInt(yearsInput.getText()); i++) { if (i
-	 * <= 0) { System.out.println("========== Grass Left ==========");
-	 * System.out.println("Year: " + i + " Grass available: " + tempGrass); }
-	 * else { tempGrass -= (cowFoodConsumption + horseFoodConsumption +
-	 * deerFoodConsumption); System.out.println("Year: " + i +
-	 * " Grass available: " + tempGrass); } } } }
-	 */
-
 	/**
 	 * Computes the result of the given values input in the relevant textfields.
-	 *
-	 * @param event
-	 *            ?
 	 */
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -457,17 +432,4 @@ public class Controller implements Initializable {
 	public TextField getYearsInput() {
 		return yearsInput;
 	}
-
-	public Button getCompute() {
-		return compute;
-	}
-
-	public Button getHistory() {
-		return showHistory;
-	}
-
-	public Button getClearData() {
-		return clearData;
-	}
-
 }

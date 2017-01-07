@@ -83,6 +83,5 @@
          </font>
       </Text>
       <Button fx:id="clearData" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleClearData" prefWidth="100.0" text="Clear Data" />
-      <Button fx:id="grassLeft" layoutX="50.0" layoutY="500.0" mnemonicParsing="false" prefWidth="100.0" text="Grass Left" />
   </children>
 </AnchorPane>
