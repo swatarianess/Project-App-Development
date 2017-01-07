@@ -33,8 +33,8 @@ public class Controller implements Initializable {
 
 	private int time = TextField.DEFAULT_PREF_COLUMN_COUNT;
 
-	//590551.182kg (based on 0.3cm height * 24 = 8cm average height.)
-	private final int grassAvailable = 14173224;
+	// 488,859kg (based on 0.3cm height * 46 = 14cm height.)
+	private final int grassAvailable = 22487514;
 
 	@FXML
 	private TextField cattleInput;
@@ -77,12 +77,11 @@ public class Controller implements Initializable {
 		} else {
 			if (!lineChart.getData().contains(cowSeries)) {
 				lineChart.getData().add(cowSeries);
-			}else{
+			} else {
 				System.out.println("Already showing cow data");
 			}
 		}
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -93,7 +92,7 @@ public class Controller implements Initializable {
 		} else {
 			if (!lineChart.getData().contains(horseSeries)) {
 				lineChart.getData().add(horseSeries);
-			}else{
+			} else {
 				System.out.println("Already showing Horse data");
 			}
 		}
@@ -108,44 +107,38 @@ public class Controller implements Initializable {
 		} else {
 			if (!lineChart.getData().contains(deerSeries)) {
 				lineChart.getData().add(deerSeries);
-			}else{
+			} else {
 				System.out.println("Already showing Deer data");
 			}
 		}
 	}
 	/*
-	@FXML
-	private void calculateGrassLeft(ActionEvent event) throws NumberFormatException {
-		if(isInputValid()) {
-			String cowConsumption = getCattleInput().getText();
-			String horseConsumption = getHorseInput().getText();
-			String deerConsumption = getDeerInput().getText();
-			double cowCons = Double.parseDouble(cowConsumption);
-			double horseCons = Double.parseDouble(horseConsumption);
-			double deerCons = Double.parseDouble(deerConsumption);
-			double cowFoodConsumption = 15 * 365 * cowCons;
-			double horseFoodConsumption = 9.4 * 365 * horseCons;
-			double deerFoodConsumption = 2.5 * 365 * deerCons;
-
-			long tempGrass = grassAvailable;
-
-			for (int i = 0; i <= Integer.parseInt(yearsInput.getText()); i++) {
-				if (i <= 0) {
-					System.out.println("========== Grass Left ==========");
-					System.out.println("Year: " + i + " Grass available: " + tempGrass);
-				} else {
-					tempGrass -= (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption);
-					System.out.println("Year: " + i + " Grass available: " + tempGrass);
-				}
-			}
-		}
-	}
-	*/
+	 * @FXML private void calculateGrassLeft(ActionEvent event) throws
+	 * NumberFormatException { if(isInputValid()) { String cowConsumption =
+	 * getCattleInput().getText(); String horseConsumption =
+	 * getHorseInput().getText(); String deerConsumption =
+	 * getDeerInput().getText(); double cowCons =
+	 * Double.parseDouble(cowConsumption); double horseCons =
+	 * Double.parseDouble(horseConsumption); double deerCons =
+	 * Double.parseDouble(deerConsumption); double cowFoodConsumption = 15 * 365
+	 * * cowCons; double horseFoodConsumption = 9.4 * 365 * horseCons; double
+	 * deerFoodConsumption = 2.5 * 365 * deerCons;
+	 * 
+	 * long tempGrass = grassAvailable;
+	 * 
+	 * for (int i = 0; i <= Integer.parseInt(yearsInput.getText()); i++) { if (i
+	 * <= 0) { System.out.println("========== Grass Left ==========");
+	 * System.out.println("Year: " + i + " Grass available: " + tempGrass); }
+	 * else { tempGrass -= (cowFoodConsumption + horseFoodConsumption +
+	 * deerFoodConsumption); System.out.println("Year: " + i +
+	 * " Grass available: " + tempGrass); } } } }
+	 */
 
 	/**
-	 *  Computes the result of the given values input in the relevant textfields.
+	 * Computes the result of the given values input in the relevant textfields.
 	 *
-	 * @param event ?
+	 * @param event
+	 *            ?
 	 */
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -185,81 +178,84 @@ public class Controller implements Initializable {
 			double rateCow = 0;
 			double rateDeer = 0;
 			double rateHorse = 0;
-			//grass consumption of each herbivore
-			
+			// grass consumption of each herbivore
+
 			int tempGrass = grassAvailable;
 			time = Integer.parseInt(yearsInput.getText());
-			for (int i = 0; i < time; i++) {
+			for (int i = 0; i < time && tempGrass > 0; i++) {
 				double cowFoodConsumption = 15 * 365 * NCow;
 				double horseFoodConsumption = 9.4 * 365 * NHorse;
 				double deerFoodConsumption = 2.5 * 365 * NDeer;
-				
+
 				if (i <= 0) {
 					NCow = Double.parseDouble(cows);
 					NDeer = Double.parseDouble(deers);
 					NHorse = Double.parseDouble(horses);
 					System.out.println("========== Grass Left ==========");
 					System.out.println("Year: " + i + " Grass available: " + tempGrass);
-					//tempGrass -= (int) (tempGrass - (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption));
+					// tempGrass -= (int) (tempGrass - (cowFoodConsumption +
+					// horseFoodConsumption + deerFoodConsumption));
 				} else {
-					rateCow = rCow * (NCow + rateCow)
-							* (1 - ((NCow + (aCowDeer * NDeer) + (aCowHorse * NHorse)) / KCow));
-					rateDeer = rDeer * (NDeer + rateDeer)
-							* (1 - ((NDeer + (aDeerCow * NCow) + (aDeerHorse * NHorse)) / KDeer));
-					rateHorse = rHorse * (NHorse + rateHorse)
-							* (1 - ((NHorse + (aHorseCow * NCow) + (aHorseDeer * NDeer)) / KHorse));
-					NCow = NCow + rateCow;
-					NDeer = NDeer + rateDeer;
-					NHorse = NHorse + rateHorse;
-					tempGrass = (int) (tempGrass - (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption));
-					System.out.println("Year: " + i + " Grass available: " + tempGrass);
-					System.out.println(NCow + " cows consume " + cowFoodConsumption + " each year");
-					System.out.println(NHorse + " horses consume " + horseFoodConsumption + " each year");
-					System.out.println(NDeer + " deers consume " + deerFoodConsumption + " each year");
-					if (tempGrass <= 0) {
-						System.out.println("Out of grass");
+						rateCow = rCow * (NCow + rateCow)
+								* (1 - ((NCow + (aCowDeer * NDeer) + (aCowHorse * NHorse)) / KCow));
+						rateDeer = rDeer * (NDeer + rateDeer)
+								* (1 - ((NDeer + (aDeerCow * NCow) + (aDeerHorse * NHorse)) / KDeer));
+						rateHorse = rHorse * (NHorse + rateHorse)
+								* (1 - ((NHorse + (aHorseCow * NCow) + (aHorseDeer * NDeer)) / KHorse));
+						NCow = NCow + rateCow;
+						NDeer = NDeer + rateDeer;
+						NHorse = NHorse + rateHorse;
+						tempGrass = (int) (tempGrass
+								- (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption));
+						System.out.println("Year: " + i + " Grass available: " + tempGrass);
+						System.out.println((double)Math.round(NCow * 100d) / 100d + " cows consume " + (double)Math.round(cowFoodConsumption * 100d) / 100d + " each year");
+						System.out.println((double)Math.round(NHorse * 100d) / 100d + " horses consume " + (double)Math.round(horseFoodConsumption * 100d) / 100d + " each year");
+						System.out.println((double)Math.round(NDeer * 100d) / 100d + " deers consume " + (double)Math.round(deerFoodConsumption * 100d) / 100d + " each year");
+
+						if (NCow < 1) {
+							NCow = (double) 0;
+							rateCow = 0;
+						}
+						if (NDeer < 1) {
+							NDeer = (double) 0;
+							rateDeer = 0;
+						}
+						if (NHorse < 1) {
+							NHorse = (double) 0;
+							rateHorse = 0;
+						}
+						if (compute.isArmed()) {
+							compute.setDisable(true);
+							showHistory.setDisable(true);
+						}
 					}
-					if (NCow < 1) {
-						NCow = (double) 0;
-						rateCow = 0;
-					}
-					if (NDeer < 1) {
-						NDeer = (double) 0;
-						rateDeer = 0;
-					}
-					if (NHorse < 1) {
-						NHorse = (double) 0;
-						rateHorse = 0;
-					}
-					if (compute.isArmed()) {
-						compute.setDisable(true);
-						showHistory.setDisable(true);
-					}
-				}
-				cowSeries.getData().add(new XYChart.Data<>(i, NCow));
-				horseSeries.getData().add(new XYChart.Data<>(i, NHorse));
-				deerSeries.getData().add(new XYChart.Data<>(i, NDeer));
+					cowSeries.getData().add(new XYChart.Data<>(i, NCow));
+					horseSeries.getData().add(new XYChart.Data<>(i, NHorse));
+					deerSeries.getData().add(new XYChart.Data<>(i, NDeer));
+					tempGrass += 1000000;
 			}
 			lineChart.getData().addAll(cowSeries, horseSeries, deerSeries);
+
 		}
 	}
 
 	/**
 	 * Checks whether the input given in the text fields are valid
 	 *
-	 * @return <b>True</b> if the input fields are not empty. <b>False</b> if the input fields are empty
+	 * @return <b>True</b> if the input fields are not empty. <b>False</b> if
+	 *         the input fields are empty
 	 */
-	
+
 	private boolean isInputValid() {
 		String errorMessage = "";
 		@SuppressWarnings("unused")
 		int valid;
-		try{
+		try {
 			valid = Integer.parseInt(horseInput.getText());
 			valid = Integer.parseInt(cattleInput.getText());
 			valid = Integer.parseInt(deerInput.getText());
 			valid = Integer.parseInt(yearsInput.getText());
-		}catch (NumberFormatException ex) {
+		} catch (NumberFormatException ex) {
 			errorMessage += "Please enter a valid number\n";
 		}
 		if (horseInput.getText() == null || horseInput.getText().length() == 0) {
@@ -287,7 +283,6 @@ public class Controller implements Initializable {
 			return false;
 		}
 	}
-
 
 	// display historical data
 	@SuppressWarnings({ "unchecked" })
@@ -422,17 +417,18 @@ public class Controller implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//Set all radioButtons selected as default.
+		// Set all radioButtons selected as default.
 		cowRadioButton.setSelected(true);
 		deerRadioButton.setSelected(true);
 		horseRadioButton.setSelected(true);
 
-		//Set series Names
+		// Set series Names
 		cowSeries.setName("Cows");
 		horseSeries.setName("Horse"); // chart Name
 		deerSeries.setName("Deer");
 
-		//To fix bug where clicking radio button like madman doesn't mess up the lines
+		// To fix bug where clicking radio button like madman doesn't mess up
+		// the lines
 		lineChart.setAnimated(true);
 
 	}
@@ -473,6 +469,5 @@ public class Controller implements Initializable {
 	public Button getClearData() {
 		return clearData;
 	}
-
 
 }
