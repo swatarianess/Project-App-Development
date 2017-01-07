@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane minHeight="500.0" minWidth="750.0" prefHeight="765.0" prefWidth="1039.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+  <!-- TODO Add Nodes -->
   <children>
     <LineChart fx:id="lineChart" layoutX="219.0" layoutY="32.0" prefHeight="517.0" prefWidth="850.0" title="Predicted data">
       <xAxis>
@@ -27,7 +28,7 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem  mnemonicParsing="false" onAction="#handleExit" text="Close" />
+            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Close" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Settings">
@@ -61,9 +62,9 @@
     <TextField fx:id="geeseInput" layoutX="50.0" layoutY="250.0" prefWidth="100.0" promptText="Enter a number" />
     <Label layoutX="83.0" layoutY="235.0" text="Geese" />
     <Button id="getButton" fx:id="compute" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleCompute" prefWidth="100.0" text="Predict" />
-    <RadioButton fx:id="cowRadioButton" layoutX="598.0" layoutY="643.0" mnemonicParsing="false" text="Cattle" onAction="#handleAppearanceCattle" />
-    <RadioButton fx:id="horseRadioButton" layoutX="598.0" layoutY="669.0" mnemonicParsing="false" text="Horses" onAction="#handleAppearanceHorses" />
-    <RadioButton fx:id="deerRadioButton" layoutX="598.0" layoutY="618.0" mnemonicParsing="false" text="Red Deer" onAction="#handleAppearanceRedDeer" />
+    <RadioButton fx:id="cowRadioButton" layoutX="598.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleAppearanceCattle" text="Cattle" />
+    <RadioButton fx:id="horseRadioButton" layoutX="598.0" layoutY="669.0" mnemonicParsing="false" onAction="#handleAppearanceHorses" text="Horses" />
+    <RadioButton fx:id="deerRadioButton" layoutX="598.0" layoutY="618.0" mnemonicParsing="false" onAction="#handleAppearanceRedDeer" text="Red Deer" />
     <RadioButton fx:id="totalRadiobutton" layoutX="598.0" layoutY="580.0" mnemonicParsing="false" text="Total">
       <font>
         <Font name="System Bold" size="12.0" />
@@ -82,6 +83,6 @@
          </font>
       </Text>
       <Button fx:id="clearData" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleClearData" prefWidth="100.0" text="Clear Data" />
-      <Button fx:id="grassLeft" layoutX="50.0" layoutY="500.0" mnemonicParsing="false" onAction="#calculateGrassLeft" prefWidth="100.0" text="Grass Left" />
+      <Button fx:id="grassLeft" layoutX="50.0" layoutY="500.0" mnemonicParsing="false" prefWidth="100.0" text="Grass Left" />
   </children>
 </AnchorPane>
