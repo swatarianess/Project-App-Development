@@ -40,8 +40,8 @@ public class Competition {
         double availableGrass = 22487514; //14173224
 
         //Loop through each year
-        for(int currentYear = 0; currentYear < predictionRange+1; currentYear++){
-
+        for(int currentYear = 0; currentYear < predictionRange+1 && availableGrass > 0; currentYear++){
+        	
             double cowFoodConsumption = 15 * 365 * nCow;
             double horseFoodConsumption = 9.4 * 365 * nHorse;
             double deerFoodConsumption = 2.5 * 365 * nDeer;
@@ -49,26 +49,26 @@ public class Competition {
 
             double rCow = 0.1588527691497652;
             double kCow = 427;
-            double aCowDeer = 0.0472;
-            double aCowHorse = 0.6109;
-            double aCowGoose = 0.009401;
+            double aCowDeer = 0.2832;
+            double aCowHorse = 0.9748;
+            double aCowGoose = 0.9401;
             rateCow = rCow * (nCow + rateCow)
                     * (1 - ((nCow + (aCowDeer * nDeer) + (aCowHorse * nHorse) + (aCowGoose * nGoose)) / kCow));
 
             double rDeer = 0.372092211870399691;
 			double kDeer = 2000;
-			double aDeerCow = 0.10566;
-			double aDeerHorse = 0.16877;
-			double aDeerGoose = 0.03728;
+			double aDeerCow = 0.6340;
+			double aDeerHorse = 0.6346;
+			double aDeerGoose = 0.6214;
 			
             rateDeer = rDeer * (nDeer + rateDeer)
                     * (1 - ((nDeer + (aDeerCow * nCow) + (aDeerHorse * nHorse) + (aDeerGoose * nGoose)) / kDeer));
 
             double rHorse = 0.330062695413144696;
 			double kHorse = 868;
-			double aHorseCow = 0.63293;
-			double aHorseDeer = 0.07811;
-			double aHorseGoose = 0.01548;
+			double aHorseCow = 1.010;
+			double aHorseDeer = 0.2937;
+			double aHorseGoose = 0.97;
             
 			rateHorse = rHorse * (nHorse + rateHorse)
                     * (1 - ((nHorse + (aHorseCow * nCow) + (aHorseDeer * nDeer) + (aHorseGoose * nGoose)) / kHorse));
@@ -101,7 +101,6 @@ public class Competition {
                 nGoose = (double) 0;
                 rateGoose = 0;
             }
-
             predictedStats.put(currentYear, new Double[] {nCow, nDeer, nHorse, nGoose, rateCow, rateDeer, rateHorse, rateGoose, availableGrass});
         }
     }

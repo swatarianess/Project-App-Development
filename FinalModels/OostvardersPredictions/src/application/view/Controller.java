@@ -183,8 +183,9 @@ public class Controller implements Initializable {
 				System.out.println(String.format("Year: %d ",year) + "Food left: " + df.format(data.get(year)[8].intValue()) + " kg.");
 			}
 			System.out.println("========================================");
+			lineChart.getData().addAll(cowSeries, horseSeries, deerSeries, gooseSeries);
 		}
-		lineChart.getData().addAll(cowSeries, horseSeries, deerSeries, gooseSeries);
+		
 
 	}
 
