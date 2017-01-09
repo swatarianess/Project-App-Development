@@ -83,7 +83,8 @@ public class Competition {
             nDeer = nDeer + rateDeer;
             nHorse = nHorse + rateHorse;
             nGoose = nGoose + rateGoose;
-            availableGrass += 1627900;
+            //grass grows on average 4 inch a month, which means yearly in kg = 55065840
+            availableGrass += 1627900;//based on 1cm a year
             availableGrass = (int) (availableGrass - (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption + gooseFoodConsumption));
             if (nCow < 1) {
                 nCow = (double) 0;

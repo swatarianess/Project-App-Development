@@ -169,7 +169,6 @@ public class Controller implements Initializable {
 				data.get(year)[7] = rateGoose
 				data.get(year)[8] = tempGrass
 				*/
-
 				double nCow = data.get(year)[0];
 				double nDeer = data.get(year)[1];
 				double nHorse = data.get(year)[2];
@@ -181,6 +180,7 @@ public class Controller implements Initializable {
 				gooseSeries.getData().add(new XYChart.Data<>(year, nGoose));
 				DecimalFormat df = new DecimalFormat("#,###");
 				System.out.println(String.format("Year: %d ",year) + "Food left: " + df.format(data.get(year)[8].intValue()) + " kg.");
+				System.out.println(nCow);
 			}
 			System.out.println("========================================");
 			lineChart.getData().addAll(cowSeries, horseSeries, deerSeries, gooseSeries);
