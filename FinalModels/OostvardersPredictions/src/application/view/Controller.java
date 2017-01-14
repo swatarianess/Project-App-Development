@@ -1,11 +1,16 @@
 package application.view;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import application.model.Competition;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,6 +61,8 @@ public class Controller implements Initializable {
 	private Button clearData;
 	@FXML
 	private LineChart<Number, Number> lineChart;
+
+	private Socket socket = new Socket();
 
 	// clear the graph data
 	@FXML
@@ -137,7 +144,7 @@ public class Controller implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	@FXML
-	private void handleCompute(ActionEvent event) {
+	private void handleCompute(ActionEvent event) throws InterruptedException, IOException {
 		if (isInputValid()) {
 			// Converting TextField to String
 			int cows = Integer.parseInt(cattleInput.getText());
@@ -147,7 +154,9 @@ public class Controller implements Initializable {
 			int years = Integer.parseInt(yearsInput.getText());
 			Map<Integer,Double[]> data;
 
-			Competition c = new Competition(cows,deers,horses,geese,years);
+//			Competition c = new Competition(cows,deers,horses,geese,years);
+
+			Competition c = new Competition(cows,deers,horses,geese,years,socket);
 			c.predictPopulations();
 			data = c.getMap();
 
@@ -180,8 +189,8 @@ public class Controller implements Initializable {
 				gooseSeries.getData().add(new XYChart.Data<>(year, nGoose));
 				DecimalFormat df = new DecimalFormat("#,###");
 				System.out.println(String.format("Year: %d ",year) + "Food left: " + df.format(data.get(year)[8].intValue()) + " kg.");
-				System.out.println(nCow);
 			}
+
 			System.out.println("========================================");
 			lineChart.getData().addAll(cowSeries, horseSeries, deerSeries, gooseSeries);
 		}
@@ -382,13 +391,24 @@ public class Controller implements Initializable {
 
 		//Set series Names
 		cowSeries.setName("Cows");
-		horseSeries.setName("Horses"); // chart Name
+		horseSeries.setName("Horses");
 		deerSeries.setName("Deer");
 		gooseSeries.setName("Geese");
 
 		//To fix bug where clicking radio button like madman doesn't mess up the lines
-		lineChart.setAnimated(true);
+		lineChart.setAnimated(false);
 
+		//Socket initialization
+		try {
+			socket.connect(new InetSocketAddress("google.com",80));
+		} catch (IOException e) {
+			System.out.println("Could not connect to: " + socket.getInetAddress());
+			e.printStackTrace();
+		}
+
+		if(socket.isConnected()){
+			System.out.println("Successfully connected to: " + socket.getInetAddress() + ":" + socket.getPort());
+		}
 	}
 
 }
