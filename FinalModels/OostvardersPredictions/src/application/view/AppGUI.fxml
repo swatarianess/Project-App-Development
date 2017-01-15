@@ -26,18 +26,18 @@
                   </font>
                 </Label>
                 <Label layoutX="84.0" layoutY="85.0" prefHeight="17.0" text="Cattle" />
-                <TextField fx:id="cattleInput" layoutX="50.0" layoutY="100.0" prefWidth="100.0" promptText="Enter a number" />
+                <TextField fx:id="cattleInputTextField" layoutX="50.0" layoutY="100.0" prefWidth="100.0" promptText="Enter a number" />
                 <Label layoutX="74.0" layoutY="135.0" prefHeight="17.0" text="Red Deer" />
-                <TextField fx:id="deerInput" layoutX="50.0" layoutY="150.0" prefWidth="100.0" promptText="Enter a number" />
+                <TextField fx:id="deerInputTextField" layoutX="50.0" layoutY="150.0" prefWidth="100.0" promptText="Enter a number" />
                 <Label layoutX="82.0" layoutY="185.0" text="Horses" />
-                <TextField fx:id="horseInput" layoutX="50.0" layoutY="200.0" prefWidth="100.0" promptText="Enter a number" />
+                <TextField fx:id="horseInputTextField" layoutX="50.0" layoutY="200.0" prefWidth="100.0" promptText="Enter a number" />
                 <Label layoutX="83.0" layoutY="235.0" text="Geese" />
-                <TextField fx:id="geeseInput" layoutX="50.0" layoutY="250.0" prefWidth="100.0" promptText="Enter a number" />
+                <TextField fx:id="geeseInputTextField" layoutX="50.0" layoutY="250.0" prefWidth="100.0" promptText="Enter a number" />
                 <Label fx:id="years" layoutX="57.0" layoutY="285.0" text="Years to predict" />
-                <TextField fx:id="yearsInput" layoutX="50.0" layoutY="300.0" prefWidth="100.0" promptText="Enter a number" />
-                <Button id="getButton" fx:id="compute" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleCompute" prefWidth="100.0" text="Predict" />
-                  <Button id="getButton" fx:id="showHistory" layoutX="37.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleHistoricalData" prefHeight="25.0" text="Show Historical Data" />
-                  <Button fx:id="clearData" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleClearData" prefWidth="100.0" text="Clear Data" />
+                <TextField fx:id="yearsInputTextField" layoutX="50.0" layoutY="300.0" prefWidth="100.0" promptText="Enter a number" />
+                <Button id="getButton" fx:id="computeButton" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleCompute" prefWidth="100.0" text="Predict" />
+                  <Button id="getButton" fx:id="showHistoryButton" layoutX="37.0" layoutY="400.0" mnemonicParsing="false" onAction="#handleHistoricalData" prefHeight="25.0" text="Show Historical Data" />
+                  <Button fx:id="clearDataButton" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#handleClearData" prefWidth="100.0" text="Clear Data" />
                 <Label layoutX="25.0" layoutY="600.0" prefWidth="140.0" text="Open data from .csv file" />
                 <Button layoutX="115.0" layoutY="620.0" mnemonicParsing="false" prefWidth="68.0" text="Browse..." />
                 <TextField layoutX="15.0" layoutY="620.0" prefHeight="25.0" prefWidth="100.0" promptText="Choose file location" />
