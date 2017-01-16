@@ -28,15 +28,17 @@ import javafx.scene.control.TextField;
 
 public class Controller implements Initializable {
 	@FXML
-	public RadioButton cowRadioButton;
+	private Button browseCSVButton;
 	@FXML
-	public RadioButton horseRadioButton;
+	private RadioButton cowRadioButton;
 	@FXML
-	public RadioButton deerRadioButton;
+	private RadioButton horseRadioButton;
 	@FXML
-	public RadioButton gooseRadioButton;
+	private RadioButton deerRadioButton;
 	@FXML
-	public RadioButton totalRadiobutton;
+	private RadioButton gooseRadioButton;
+	@FXML
+	private RadioButton totalRadiobutton;
 
 	@FXML
 	private TextField cattleInputTextField;
@@ -84,9 +86,8 @@ public class Controller implements Initializable {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@FXML
-	public void handleAppearanceGoose(ActionEvent actionEvent) {
+	private void handleAppearanceGoose(ActionEvent actionEvent) {
 		if (!gooseRadioButton.isSelected()) {
 			lineChart.getData().remove(gooseSeries);
 		} else {
@@ -99,9 +100,8 @@ public class Controller implements Initializable {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@FXML
-	public void handleAppearanceCattle(ActionEvent actionEvent) {
+	private void handleAppearanceCattle(ActionEvent actionEvent) {
 		if (!cowRadioButton.isSelected()) {
 			lineChart.getData().remove(cowSeries);
 		} else {
@@ -114,9 +114,8 @@ public class Controller implements Initializable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@FXML
-	public void handleAppearanceHorses(ActionEvent actionEvent) {
+	private void handleAppearanceHorses(ActionEvent actionEvent) {
 		if (!horseRadioButton.isSelected()) {
 			lineChart.getData().remove(horseSeries);
 		} else {
@@ -128,9 +127,8 @@ public class Controller implements Initializable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@FXML
-	public void handleAppearanceRedDeer(ActionEvent actionEvent) {
+	private void handleAppearanceRedDeer(ActionEvent actionEvent) {
 		if (!deerRadioButton.isSelected()) {
 			lineChart.getData().remove(deerSeries);
 		} else {
@@ -147,7 +145,6 @@ public class Controller implements Initializable {
 	 *
 	 * @param event ?
 	 */
-	@SuppressWarnings("unchecked")
 	@FXML
 	private void handleCompute(ActionEvent event) throws InterruptedException, IOException {
 		if (isInputValid()) {
@@ -213,7 +210,6 @@ public class Controller implements Initializable {
 	 *
 	 * @return <b>True</b> if the input fields are not empty. <b>False</b> if the input fields are empty
 	 */
-
 	private boolean isInputValid() {
 		String errorMessage = "";
 		@SuppressWarnings("unused")
@@ -257,10 +253,8 @@ public class Controller implements Initializable {
 		}
 	}
 
-	// display historical data
-	@SuppressWarnings({ "unchecked" })
 	@FXML
-	public void handleHistoricalData(ActionEvent event) {
+	private void handleHistoricalData(ActionEvent event) {
 
 		// add historical data to cows
 		cowSeries.getData().add(new XYChart.Data<>(1983, 30.0));
@@ -389,6 +383,10 @@ public class Controller implements Initializable {
 		System.exit(0);
 	}
 
+	@FXML
+	private void handleBrowseFiles(ActionEvent actionEvent) {
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//Set all radioButtons selected as default.
@@ -407,7 +405,7 @@ public class Controller implements Initializable {
 		lineChart.setAnimated(false);
 
 		//Socket initialization
-		initializeConnection("google.com",80);
+		initializeConnection("127.0.0.1",80);
 	}
 
 	private void initializeConnection(String host, int port){
@@ -475,6 +473,10 @@ public class Controller implements Initializable {
 	private double parseDataReceived(String s){
 		Gson g = new GsonBuilder().create();
 		return 0.00;
+	}
+
+	private void readerCSV(){
+
 	}
 
 }
