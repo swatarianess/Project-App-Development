@@ -35,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -84,11 +85,23 @@ public class Controller implements Initializable {
 	private Socket sckt = new Socket();
 	private PrintWriter s_out;
 	private BufferedReader s_in;
-	
+	private FileChooser fileChooser = new FileChooser();
 
 	@FXML
 	private void browseCSVButton(ActionEvent actionEvent) {
-		Desktop desktop = Desktop.getDesktop();// default location for csv
+		
+		
+		 fileChooser.setTitle("Open Resource File");
+		 fileChooser.getExtensionFilters().addAll(
+		         new ExtensionFilter("Text Files", "*.txt","*.csv"),
+		         new ExtensionFilter("All Files", "*.*"));
+		 File selectedFile = fileChooser.showOpenDialog(Main.getPrimaryStage());
+		 if (selectedFile != null) {
+			 Main.display(selectedFile);
+		 }
+		 }
+		
+		/* Desktop desktop = Desktop.getDesktop();// default location for csv
 		  FileChooser fileChooser = new FileChooser();
 		  
 	        // Set extension filter
@@ -105,7 +118,7 @@ public class Controller implements Initializable {
 		}
 		
 		
-		 /* Button openMultipleButton = new Button("Open a CSV file!");
+		 Button openMultipleButton = new Button("Open a CSV file!");
 		openMultipleButton.setOnAction(new EventHandler<ActionEvent>() {
 			private Window actionEvent;
 
