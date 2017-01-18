@@ -1,6 +1,5 @@
 package application.view;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,35 +10,24 @@ import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import application.Main;
 import application.model.Competition;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Window;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 
 public class Controller implements Initializable {
 
@@ -85,73 +73,6 @@ public class Controller implements Initializable {
 	private Socket sckt = new Socket();
 	private PrintWriter s_out;
 	private BufferedReader s_in;
-	private FileChooser fileChooser = new FileChooser();
-
-	@FXML
-	private void browseCSVButton(ActionEvent actionEvent) {
-		
-		
-		 fileChooser.setTitle("Open Resource File");
-		 fileChooser.getExtensionFilters().addAll(
-		         new ExtensionFilter("Text Files", "*.txt","*.csv"),
-		         new ExtensionFilter("All Files", "*.*"));
-		 File selectedFile = fileChooser.showOpenDialog(Main.getPrimaryStage());
-		 if (selectedFile != null) {
-			 Main.display(selectedFile);
-		 }
-		 }
-		
-		/* Desktop desktop = Desktop.getDesktop();// default location for csv
-		  FileChooser fileChooser = new FileChooser();
-		  
-	        // Set extension filter
-	        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-	                "CSV files (*.csv)", "*.csv");
-	        fileChooser.getExtensionFilters().add(extFilter);
-	 
-	        // Show save file dialog
-	        File file = fileChooser.showOpenDialog(Main.getPrimaryStage());
-	 
-	        if (file != null) {
-	            Main.loadDataFromFile(file);
-	        }
-		}
-		
-		
-		 Button openMultipleButton = new Button("Open a CSV file!");
-		openMultipleButton.setOnAction(new EventHandler<ActionEvent>() {
-			private Window actionEvent;
-
-			@Override
-			public void handle(final ActionEvent e) {
-				List<File> list = fileChooser.showOpenMultipleDialog(this.actionEvent);
-				if (list != null) {
-					for (File file : list) {
-						openFile(file);
-					}
-				}
-			}
-		});
-		final GridPane inputGridPane = new GridPane();
-
-		GridPane.setConstraints(openMultipleButton, 1, 0);
-		inputGridPane.setHgap(6);
-		inputGridPane.setVgap(6);
-		inputGridPane.getChildren().addAll(openMultipleButton);
-
-		final Pane rootGroup = new VBox(12);
-		rootGroup.getChildren().addAll(inputGridPane);
-		rootGroup.setPadding(new Insets(12, 12, 12, 12));
-
-	}
-
-	private void openFile(File file) {
-		try {
-			desktop.open(file);
-		} catch (IOException ex) {
-			Logger.getLogger(FileChooser.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}*/
 
 	// clear the graph data
 	@FXML
@@ -464,6 +385,26 @@ public class Controller implements Initializable {
 
 	@FXML
 	private void handleBrowseFiles(ActionEvent actionEvent) {
+		
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Choose a CSV File");
+		//File csvF=fc.showOpenDialog(Main.getScene().getWindow());
+		
+		//Open directory from existing directory
+		if(file != null){
+		   File existDirectory = file.getParentFile();
+		  fc.setInitialDirectory(existDirectory);
+		           }
+		 
+		                //Set extension filter
+		                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+		                fileChooser.getExtensionFilters().add(extFilter);
+		                 
+		                //Show open file dialog, with primaryStage blocked.
+		                file = fileChooser.showOpenDialog(primaryStage);
+		                 
+		                labelFile.setText(file.getPath());
+
 	}
 
 	@Override
@@ -569,7 +510,8 @@ public class Controller implements Initializable {
 		return 0.00;
 	}
 
-	private void readerCSV() {
+	private void readerCSV(){
+		browseCSVButton
 
 	}
 
