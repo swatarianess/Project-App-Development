@@ -1,0 +1,37 @@
+
+public class CSVReader {
+
+	private ArrayList<String> listYears;
+	private ArrayList<String> listData;
+
+	public List<String> getlistYears() {
+		return new ArrayList<String>(listYears);
+	}
+
+	public List<String> getlistData() {
+		return new ArrayList<String>(listData);
+	}
+
+	public void readCSV() {
+		String csvFile = "*.csv";
+		String line = "";
+		String csvSplit = ",";
+
+		try (BufferedReader bufr = new BufferedReader(new FileReader(csvFile))) {
+			listYears = new ArrayList<String>();
+			listData = new ArrayList<String>();
+
+
+			// Reads a line of text. A line is considered to be terminated by
+			// any one of a line feed ('\n')
+			while ((line = bufr.readLine()) != null) {
+				String[] years = line.split(csvSplit);
+				listYears.addAll(Arrays.asList(years));
+			}		//System.out.println(listYears+"\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+}
