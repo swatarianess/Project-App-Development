@@ -1,0 +1,48 @@
+	
+	private ArrayList<String> listYears;
+	private ArrayList<String> listData;
+
+	public List<String> getlistYears() {
+		return new ArrayList<String>(listYears);
+	}
+
+	public List<String> getlistData() {
+		return new ArrayList<String>(listData);
+	}
+	
+	@FXML
+	private void handleBrowseFiles(ActionEvent actionEvent) {
+		FileChooser fc = new FileChooser();
+		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)","*.csv");
+		fc.setSelectedExtensionFilter(extensionFilter);
+		fc.setTitle("Choose me");
+		File document = fc.showOpenDialog(new Stage());
+		try {
+			List<String> lines = Files.readAllLines(Paths.get(document.toPath().toString()),Charset.defaultCharset());
+			//TODO add parser to parse document
+			String line = "";
+			String csvSplit = ",";
+
+			try (BufferedReader bufr = new BufferedReader(new FileReader(document))) {
+				listYears = new ArrayList<String>();
+				listData = new ArrayList<String>();
+
+
+				// Reads a line of text. A line is considered to be terminated by
+				// any one of a line feed ('\n')
+				while ((line = bufr.readLine()) != null) {
+					String[] years = line.split(csvSplit);
+					String[] data = line.split(csvSplit);
+					listYears.addAll(Arrays.asList(years));
+					listData.addAll(Arrays.asList(data));
+				}		//System.out.println(listYears+"\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println(Arrays.toString(lines.toArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
