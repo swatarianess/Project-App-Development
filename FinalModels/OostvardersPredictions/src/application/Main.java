@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
-
 public class Main extends Application {
 	
 	private Stage primaryStage;
@@ -26,6 +25,7 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getClassLoader().getResource("application/view/AppGUI.fxml"));
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource("application/view/AppGUI.fxml"));
 			root = loader.load();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);

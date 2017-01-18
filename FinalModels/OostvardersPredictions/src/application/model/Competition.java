@@ -1,8 +1,5 @@
 package application.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +8,7 @@ public class Competition{
 
     //Number of each species
     private double nCows = 0;
-    private double nDeers = 0;
+    private double nDeer = 0;
     private double nHorses = 0;
     private double nGeese = 0;
 
@@ -33,7 +30,7 @@ public class Competition{
     //Variables for keeping time
     private int currentYear = 0;
 
-    //nCows, nDeers, nHorses,nGeese, RateCow, RateDeer, RateHorse, RateGoose, grassAvailable
+    //nCows, nDeer, nHorses,nGeese, RateCow, RateDeer, RateHorse, RateGoose, grassAvailable
     private HashMap<Integer,Double[]> predictedStats = new HashMap<>();
 
     /**
@@ -44,16 +41,11 @@ public class Competition{
      */
     public Competition(int nCows, int nDeer, int nHorses, int nGeese){
         this.nCows = nCows;
-        this.nDeers = nDeer;
+        this.nDeer = nDeer;
         this.nHorses = nHorses;
         this.nGeese = nGeese;
 
-        cowFoodConsumption = 15 * 365 * nCows;
-        horseFoodConsumption = 9.4 * 365 * nHorses;
-        deerFoodConsumption = 2.5 * 365 * nDeer;
-        gooseFoodConsumption = 0.15 * 365 * nGeese;
-
-        predictedStats.put(0, new Double[] {this.nCows, this.nDeers, this.nHorses, this.nGeese,
+        predictedStats.put(0, new Double[] {this.nCows, this.nDeer, this.nHorses, this.nGeese,
                 0.00, 0.00, 0.00, 0.00, availableGrass});
     }
 
@@ -62,7 +54,13 @@ public class Competition{
      */
     public void predictPopulations() throws IOException, InterruptedException {
         //Loop through each year
-        currentYear++;
+        cowFoodConsumption = 15 * 365 * nCows;
+        horseFoodConsumption = 9.4 * 365 * nHorses;
+        deerFoodConsumption = 2.5 * 365 * nDeer;
+        gooseFoodConsumption = 0.15 * 365 * nGeese;
+
+        double totalConsumption = (cowFoodConsumption + horseFoodConsumption + deerFoodConsumption + gooseFoodConsumption);
+
         double rCow = 0.1588527691497652;
         double kCow = 427;
         double aCowDeer = 0.2832;
@@ -86,35 +84,35 @@ public class Competition{
         //For Geese
         double rGoose = 0.0449709691497654;
         double kGoose = 2000;
-        rateCow = rCow * (nCows + rateCow)
-                * (1 - ((nCows + (aCowDeer * nDeers) + (aCowHorse * nHorses) + (aCowGoose * nGeese)) / kCow));
 
-        rateDeer = rDeer * (nDeers + rateDeer)
-                * (1 - ((nDeers + (aDeerCow * nCows) + (aDeerHorse * nHorses) + (aDeerGoose * nGeese)) / kDeer));
+        rateCow = rCow * (nCows + rateCow)
+                * (1 - ((nCows + (aCowDeer * nDeer) + (aCowHorse * nHorses) + (aCowGoose * nGeese)) / kCow));
+
+        rateDeer = rDeer * (nDeer + rateDeer)
+                * (1 - ((nDeer + (aDeerCow * nCows) + (aDeerHorse * nHorses) + (aDeerGoose * nGeese)) / kDeer));
 
         rateHorse = rHorse * (nHorses + rateHorse)
-                * (1 - ((nHorses + (aHorseCow * nCows) + (aHorseDeer * nDeers) + (aHorseGoose * nGeese)) / kHorse));
+                * (1 - ((nHorses + (aHorseCow * nCows) + (aHorseDeer * nDeer) + (aHorseGoose * nGeese)) / kHorse));
 
         rateGoose = rGoose * (nGeese + rateGoose)
-                * (1 - ((nGeese + (aCowGoose * nCows) + (aDeerGoose * nDeers) + (aHorseGoose * nHorses)) / kGoose));
+                * (1 - ((nGeese + (aCowGoose * nCows) + (aDeerGoose * nDeer) + (aHorseGoose * nHorses)) / kGoose));
 
         nCows += rateCow;
-        nDeers += rateDeer;
+        nDeer += rateDeer;
         nHorses += rateHorse;
         nGeese += rateGoose;
 
         //grass grows on average 4 inch a month, which means yearly in kg = 55065840
         availableGrass += 1627900;//based on 1cm a year
-        availableGrass = (int) (availableGrass - (cowFoodConsumption + horseFoodConsumption
-                + deerFoodConsumption + gooseFoodConsumption));
+        availableGrass -= totalConsumption;
 
         if (nCows < 1) {
             nCows = (double) 0;
             rateCow = 0;
         }
 
-        if (nDeers < 1) {
-            nDeers = (double) 0;
+        if (nDeer < 1) {
+            nDeer = (double) 0;
             rateDeer = 0;
         }
 
@@ -127,8 +125,9 @@ public class Competition{
             nGeese = (double) 0;
             rateGoose = 0;
         }
+        currentYear++;
 
-        predictedStats.put(currentYear, new Double[] {nCows, nDeers, nHorses, nGeese,
+        predictedStats.put(currentYear, new Double[] {nCows, nDeer, nHorses, nGeese,
                 rateCow, rateDeer, rateHorse, rateGoose, availableGrass});
     }
 
@@ -147,8 +146,8 @@ public class Competition{
         return nCows;
     }
 
-    public double getnDeers() {
-        return nDeers;
+    public double getnDeer() {
+        return nDeer;
     }
 
     public double getnHorses() {

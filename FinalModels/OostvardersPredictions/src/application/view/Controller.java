@@ -1,16 +1,15 @@
 package application.view;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import application.model.Competition;
 import com.google.gson.Gson;
@@ -25,8 +24,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Controller implements Initializable {
+
 	@FXML
 	private Button browseCSVButton;
 	@FXML
@@ -51,7 +54,6 @@ public class Controller implements Initializable {
 	@FXML
 	private TextField yearsInputTextField;
 
-
 	@FXML
 	private Button computeButton;
 	@FXML
@@ -59,20 +61,47 @@ public class Controller implements Initializable {
 	@FXML
 	private Button clearDataButton;
 
-
 	@FXML
 	private LineChart<Number, Number> lineChart;
 
+	@SuppressWarnings("Rawtype")
 	private XYChart.Series cowSeries = new XYChart.Series<>();
+
+	@SuppressWarnings("Rawtype")
 	private XYChart.Series deerSeries = new XYChart.Series<>();
+
+	@SuppressWarnings("Rawtype")
 	private XYChart.Series horseSeries = new XYChart.Series<>();
+
+	@SuppressWarnings("Rawtype")
 	private XYChart.Series gooseSeries = new XYChart.Series<>();
 
 	private Socket sckt = new Socket();
 	private PrintWriter s_out;
 	private BufferedReader s_in;
 
-	// clear the graph data
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		//Set all radioButtons selected as default.
+		cowRadioButton.setSelected(true);
+		deerRadioButton.setSelected(true);
+		horseRadioButton.setSelected(true);
+		gooseRadioButton.setSelected(true);
+
+		//Set series Names
+		cowSeries.setName("Cows");
+		horseSeries.setName("Horses");
+		deerSeries.setName("Deer");
+		gooseSeries.setName("Geese");
+
+		//To fix bug where clicking radio button like madman doesn't mess up the lines
+		lineChart.setAnimated(false);
+
+		//Socket initialization
+//		initializeConnection("100.68.8.252",54916);
+		initializeConnection("100.68.8.252",56900);
+	}
+
 	@FXML
 	private void handleClearData(ActionEvent event) {
 		lineChart.getData().clear();
@@ -85,7 +114,7 @@ public class Controller implements Initializable {
 			showHistoryButton.setDisable(false);
 		}
 	}
-	
+
 	@FXML
 	private void handleAppearanceGoose(ActionEvent actionEvent) {
 		if (!gooseRadioButton.isSelected()) {
@@ -99,7 +128,7 @@ public class Controller implements Initializable {
 			}
 		}
 	}
-	
+
 	@FXML
 	private void handleAppearanceCattle(ActionEvent actionEvent) {
 		if (!cowRadioButton.isSelected()) {
@@ -147,6 +176,10 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	private void handleCompute(ActionEvent event) throws InterruptedException, IOException {
+		if(sckt.isConnected()){
+			System.out.println("Connection status: " + sckt.isConnected());
+		}
+
 		if (isInputValid()) {
 			// Converting TextField to String
 			int cows = Integer.parseInt(cattleInputTextField.getText());
@@ -158,12 +191,16 @@ public class Controller implements Initializable {
 			Map<Integer,Double[]> data;
 
 			Competition c = new Competition(cows,deers,horses,geese);
-			System.out.println(generateJson((double) c.getCurrentYear(), c.getnGeese(), c.getAvailableGrass()));
 
 			for(int y =0; y < years; y++) {
+				//TODO Send initial Data, Check data matches
+				if(sckt.isConnected()){
+					s_out.write(generateJson((double) c.getCurrentYear(), c.getnGeese(), c.getAvailableGrass()));
+					s_out.flush();
+				}
 				waitUntilResponse();
 				c.predictPopulations();
-				System.out.println(generateJson((double) c.getCurrentYear(), c.getnGeese(), c.getAvailableGrass()));
+//				System.out.println(generateJson((double) c.getCurrentYear(), c.getnGeese(), c.getAvailableGrass()));
 			}
 
 			data = c.getMap();
@@ -201,7 +238,7 @@ public class Controller implements Initializable {
 			System.out.println("========================================");
 			lineChart.getData().addAll(cowSeries, horseSeries, deerSeries, gooseSeries);
 		}
-		
+
 
 	}
 
@@ -385,31 +422,23 @@ public class Controller implements Initializable {
 
 	@FXML
 	private void handleBrowseFiles(ActionEvent actionEvent) {
-	}
+		FileChooser fc = new FileChooser();
+		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)","*.csv");
+		fc.setSelectedExtensionFilter(extensionFilter);
+		fc.setTitle("Choose me");
+		File document = fc.showOpenDialog(new Stage());
+		try {
+			List<String> lines = Files.readAllLines(Paths.get(document.toPath().toString()),Charset.defaultCharset());
+			//TODO add parser to parse document
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		//Set all radioButtons selected as default.
-		cowRadioButton.setSelected(true);
-		deerRadioButton.setSelected(true);
-		horseRadioButton.setSelected(true);
-		gooseRadioButton.setSelected(true);
-
-		//Set series Names
-		cowSeries.setName("Cows");
-		horseSeries.setName("Horses");
-		deerSeries.setName("Deer");
-		gooseSeries.setName("Geese");
-
-		//To fix bug where clicking radio button like madman doesn't mess up the lines
-		lineChart.setAnimated(false);
-
-		//Socket initialization
-		initializeConnection("127.0.0.1",80);
+			System.out.println(Arrays.toString(lines.toArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initializeConnection(String host, int port){
-		try {
+		try{
 			sckt.connect(new InetSocketAddress(host,port));
 		} catch (IOException e) {
 			System.out.println("Could not connect to: " + sckt.getInetAddress());
@@ -422,7 +451,7 @@ public class Controller implements Initializable {
 				this.s_out = new PrintWriter(sckt.getOutputStream(), true); 									//Initialize writer for sckt
 				this.s_in = new BufferedReader(new InputStreamReader(sckt.getInputStream()));					//Initialize reader for sckt
 			} catch (IOException e){
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		} else {
 			System.out.println("No connection to server established");
@@ -434,15 +463,22 @@ public class Controller implements Initializable {
 	 * @throws IOException Thrown if cannot read response from sckt
 	 */
 	private void waitUntilResponse() throws InterruptedException, IOException {
-		if(sckt.isConnected()) {
-			int counter = 0;
-			do {
-				Thread.sleep(250);
-				//Counter for testing purposes
+		int counter = 0;
+		if(sckt.isConnected())
+		{
+			System.out.println("Waiting until receiving response..");
+			do{
+				Thread.sleep(500);
 				counter++;
-				if (counter >= 2)
+
+				if (counter >= 10) {
+					System.out.println("Waited 5 seconds..");
 					break;
+				}
+
 			} while (!s_in.ready());
+
+
 		} else {
 			System.out.println("Connection not established to server.");
 		}
@@ -457,7 +493,7 @@ public class Controller implements Initializable {
 	 */
 	private String generateJson(Double year, Double geese, Double grass){
 		Gson g = new GsonBuilder().create();
-		HashMap<String,Double> jsonData = new HashMap<>();
+		Map<String,Number> jsonData = new HashMap<>();
 
 		jsonData.put("Iteration",year);
 		jsonData.put("Geese",geese);
@@ -470,9 +506,23 @@ public class Controller implements Initializable {
 	 * @param s The string to parse from Json Object to a double to initialize variables
 	 * @return Returns a double from the string paramater entered
 	 */
-	private double parseDataReceived(String s){
-		Gson g = new GsonBuilder().create();
-		return 0.00;
+	private double[] parseDataReceived(String s){
+		Map<String, Number> result = new HashMap<>();
+		double[] doubles = new double[2];
+
+		s = s.substring(1, s.length() - 2);
+		String[] entries = s.split(",");
+		for (String entry : entries) {
+			String[] pair = entry.split(":");
+			String key = pair[0].substring(1, pair[0].length()-2);
+			double value = Double.parseDouble(pair[1]);
+			result.put(key, value);
+		}
+
+		doubles[0] = result.get("grass").doubleValue();
+		doubles[1] = result.get("geese").doubleValue();
+
+		return doubles;
 	}
 
 	private void readerCSV(){
