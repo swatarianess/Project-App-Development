@@ -162,4 +162,9 @@ public class Competition{
         return nGeese;
     }
 
+
+    //
+    public void setGeese(double nGeese){this.nGeese = nGeese;}
+    public void setAvailableGrass(double availableGrass){this.availableGrass = availableGrass;}
+
 }

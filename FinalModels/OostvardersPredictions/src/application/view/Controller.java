@@ -193,14 +193,18 @@ public class Controller implements Initializable {
 			Competition c = new Competition(cows,deers,horses,geese);
 
 			for(int y =0; y < years; y++) {
-				//TODO Send initial Data, Check data matches
 				if(sckt.isConnected()){
 					s_out.write(generateJson((double) c.getCurrentYear(), c.getnGeese(), c.getAvailableGrass()));
 					s_out.flush();
+
+					waitUntilResponse();
+
+					double[] geeseAndGrass = parseDataReceived(s_in.readLine());
+
+					c.setAvailableGrass(geeseAndGrass[0]);
+					c.setGeese(geeseAndGrass[1]);
 				}
-				waitUntilResponse();
 				c.predictPopulations();
-//				System.out.println(generateJson((double) c.getCurrentYear(), c.getnGeese(), c.getAvailableGrass()));
 			}
 
 			data = c.getMap();
@@ -477,8 +481,10 @@ public class Controller implements Initializable {
 				}
 
 			} while (!s_in.ready());
+			if(s_in.readLine()!=null) {
+				double[] geeseAndGrass = parseDataReceived(s_in.readLine());
 
-
+			}
 		} else {
 			System.out.println("Connection not established to server.");
 		}
